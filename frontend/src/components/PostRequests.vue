@@ -44,7 +44,7 @@
 </div>
   </div>
   </div>
-  <div class="posts p-10">
+  <div class="posts p-10" v-for="offer in RequestAnnouncements" :key="offer.id">
     <!-- post -->
     <div
       class="container my-10 mx-auto max-w-3xl bg-slate-200 rounded-xl shadow-lg hover:scale-105 hover:shadow-2xl transform transition-all duration-500"
@@ -58,14 +58,14 @@
           />
           <div class="ml-3">
             <h1 class="text-xl font-bold text-gray-800 cursor-pointer">
-              Belkhoukh Abdelghafour PostRequests
+              {{offer.name}}
             </h1>
             <p class="text-sm text-gray-800 hover:underline cursor-pointer">
-              #Posted 2 hours ago
+              Created at {{offer.created_at}}
             </p>
           </div>
         </div>
-        <div @click="showing = !showing">
+        <div @click="showing = !showing" v-if="logged && offer.authorID == userID">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             class="h-7 w-7 cursor-pointer"
@@ -102,34 +102,54 @@
                   class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
                   >Delete</a>
               </li>
-              
             </ul>
           </div>
-         
         </div>
       </div>
       <img src="https://i.stack.imgur.com/6Yn3K.png" alt="" />
       <div class="p-6">
-        <h1 class="text-3xl font-bold text-gray-800 cursor-pointer">Flores</h1>
-        <h2 class="text-xl text-gray-800 font-semibold">by Belkhoukh Abdelghafour</h2>
+        <h1 class="text-3xl font-bold text-gray-800 cursor-pointer">{{offer.title}}</h1>
+        <h2 class="text-xl text-gray-800 font-semibold">by {{offer.name}}</h2>
         <p class="text-lg font font-extralight text-black">
-          Lorem ipsum carrots, enhanced undergraduate developer, but they do
-          occaecat time and vitality, Lorem ipsum carrots,
+          {{offer.description}}
         </p>
       </div>
     </div>
   </div>
 </template>
 <script>
+
+import axios from 'axios'
+
 export default {
   name: "PostRequests",
   components: {},
   data(){
     return {
       showing: false,
-      showingUpdate: false
+      showingUpdate: false,
+      RequestAnnouncements: [],
+      logged : this.isLogin,
+      userID: localStorage.getItem('id'),
     }
   },
+  beforeMount(){
+    this.getRequestAnnouncements()
+  },
+  methods: {
+    getRequestAnnouncements : function(){
+      axios.get('http://127.0.0.1:8000/api/announcements/search/request')
+      .then(response => {
+        this.RequestAnnouncements = response.data
+      })
+      .then(res => {
+        console.log(res)
+      })
+      .catch(err => {
+        console.log(err)
+      })
+    },
+  }
 };
 </script>
 <style></style>

@@ -1,5 +1,5 @@
 <template>
-  <NavBar />
+  <!-- <NavBar /> -->
   <div class="main-content pt-10 z-0 bg-fixed">
   <AddPost />
   <PostFilter />
@@ -29,5 +29,6 @@ export default {
 <style >
   .main-content {
   background-image: url("https://i.stack.imgur.com/6Yn3K.png");
+  height: auto;
 }
 </style>

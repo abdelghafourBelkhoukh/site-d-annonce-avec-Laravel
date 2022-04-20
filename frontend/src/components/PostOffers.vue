@@ -44,11 +44,11 @@
 </div>
   </div>
   </div>
-  <div class="posts p-10">
+  <div class="posts p-10" >
     <!-- post -->
     <div
       class="container my-10 mx-auto max-w-3xl bg-slate-200 rounded-xl shadow-lg hover:scale-105 hover:shadow-2xl transform transition-all duration-500"
-    >
+      v-for="offer in offerAnnouncements" :key="offer.id">
       <div class="flex items-center justify-between px-4">
         <div class="flex justify-between items-center py-4">
           <img
@@ -58,14 +58,17 @@
           />
           <div class="ml-3">
             <h1 class="text-xl font-bold text-gray-800 cursor-pointer">
-              Belkhoukh Abdelghafour PostOffers
+              {{offer.name}}
             </h1>
             <p class="text-sm text-gray-800 hover:underline cursor-pointer">
-              #Posted 2 hours ago
+              Created at {{offer.created_at}} /////
+              {{userID}}
+              {{offer.id}}
+              {{offer.authorID}}
             </p>
           </div>
         </div>
-        <div @click="showing = !showing">
+        <div @click="showing = !showing" v-if="logged && offer.authorID == userID">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             class="h-7 w-7 cursor-pointer"
@@ -100,6 +103,7 @@
                 <a
                   href="#"
                   class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                  @click="deleteOffer(offer.id)"
                   >Delete</a>
               </li>
               
@@ -110,26 +114,63 @@
       </div>
       <img src="https://i.stack.imgur.com/6Yn3K.png" alt="" />
       <div class="p-6">
-        <h1 class="text-3xl font-bold text-gray-800 cursor-pointer">Flores</h1>
-        <h2 class="text-xl text-gray-800 font-semibold">by Belkhoukh Abdelghafour</h2>
+        <h1 class="text-3xl font-bold text-gray-800 cursor-pointer">{{offer.title}}</h1>
+        <h2 class="text-xl text-gray-800 font-semibold">by {{offer.name}}</h2>
         <p class="text-lg font font-extralight text-black">
-          Lorem ipsum carrots, enhanced undergraduate developer, but they do
-          occaecat time and vitality, Lorem ipsum carrots,
+          {{offer.description}}
         </p>
       </div>
     </div>
   </div>
 </template>
 <script>
+
+import axios from 'axios'
+
 export default {
   name: "PostOffers",
+  inject:['isLogin'],
   components: {},
   data(){
     return {
       showing: false,
-      showingUpdate: false
+      showingUpdate: false,
+      offerAnnouncements: [],
+      logged : this.isLogin,
+      userID: localStorage.getItem('id'),
     }
   },
-};
+  beforeMount(){
+    this.getOfferAnnouncements()
+  },
+  methods: {
+    getOfferAnnouncements : function(){
+      axios.get('http://127.0.0.1:8000/api/announcements/search/offer')
+      .then(response => {
+        this.offerAnnouncements = response.data
+        console.log(response.data)
+      })
+      .catch(err => {
+        console.log(err)
+      })
+    },
+    deleteOffer: function(id){
+      const config = {
+                headers: {
+                    'accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + localStorage.getItem("token")
+                }
+            };
+      axios.delete('http://127.0.0.1:8000/api/announcements/'+id, config)
+      .then(response => {
+        this.getOfferAnnouncements()
+      })
+      .catch(err => {
+        console.log(err)
+      })
+    }
+  }
+}
 </script>
 <style></style>

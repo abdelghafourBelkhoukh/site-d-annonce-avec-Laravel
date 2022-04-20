@@ -37,9 +37,10 @@ export default {
   },
   data(){
     return {
-      showing : null,
+      showing : 'PostOffers',
     }
   },
+  
 };
 </script>
 

@@ -1,5 +1,5 @@
 <template>
-  <navBarVue />
+  <!-- <navBarVue /> -->
   <div>
     <login />
   </div>

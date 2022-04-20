@@ -17,14 +17,24 @@
                 <router-link to="/">Announcements</router-link>
             </a>
           </li>
-          <li class="nav-item">
+          <li class="nav-item" v-if="!isLogged">
             <a class="px-3 py-2 flex items-center text-xs uppercase leading-snug text-black hover:bg-slate-100 hover:text-slate-900">
                 <router-link to="/Signup">Sign up</router-link>
             </a>
           </li>
-          <li class="nav-item">
+          <li class="nav-item" v-if="isLogged">
+            <a class="px-3 py-2 flex items-center text-xs uppercase leading-snug text-black hover:bg-slate-100 hover:text-slate-900">
+                <router-link to="/">{{userName}}</router-link>
+            </a>
+          </li>
+          <li class="nav-item" v-if="!isLogged">
             <a class="px-3 py-2 flex items-center text-xs uppercase leading-snug text-black hover:bg-slate-100 hover:text-slate-900">
                 <router-link to="/Login">Login</router-link>
+            </a>
+          </li>
+          <li class="nav-item" v-if="isLogged">
+            <a class="px-3 py-2 flex items-center text-xs uppercase leading-snug text-black hover:bg-slate-100 hover:text-slate-900">
+                <input type="button" @click="logout" value="Log out">
             </a>
           </li>
         </ul>
@@ -34,22 +44,48 @@
 </template>
 
 <script>
-import {VueScrollFixedNavbar} from "vue-scroll-fixed-navbar";
+// import {VueScrollFixedNavbar} from "vue-scroll-fixed-navbar";
+import axios from 'axios'
 
 export default {
   name: "navBar",
+  inject:['setLogin','isLogin'],
   components: {
-    VueScrollFixedNavbar
+    // VueScrollFixedNavbar
   },
   data() {
     return {
-      showMenu: false
+      showMenu: false,
+      isLogged:this.isLogin,
+      localID: localStorage.getItem('id'),
+      userName: localStorage.getItem('name'),
     }
   },
   methods: {
     toggleNavbar(){
       this.showMenu = !this.showMenu;
-    }
+    },
+    async logout(){
+        console.log('logout');
+      let config = {
+                headers: {
+                  'Accept' : 'application/json',
+                  'Content-Type': 'application/json',
+                  'Authorization': 'Bearer ' + localStorage.getItem('token')
+                }
+            };
+      axios.post('http://127.0.0.1:8000/api/logout', {}, config)
+      .then( () => {
+        localStorage.removeItem('id');
+        localStorage.removeItem('name');
+        localStorage.removeItem('token');
+      })
+      .catch(err => {
+        console.log(err)
+      });
+      this.setLogin(false);
+      this.$router.push('/');
+      }
   }
 }
 </script>

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use App\Models\announcements;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class announcementsController extends Controller
 {
@@ -79,6 +80,14 @@ class announcementsController extends Controller
      */
     public function search($type)
     {
-        return announcements::where('type', $type)->get();
+        $result = DB::table('announcements')
+        ->join('users', 'announcements.authorID', '=', 'users.id')
+        ->select('announcements.*', 'users.name')
+        ->where('announcements.type', '=', $type)
+        ->get();
+
+        return $result;
+
     }
+
 }
