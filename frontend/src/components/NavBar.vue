@@ -3,8 +3,8 @@
   <nav class="sticky z-50 bg-white flex flex-wrap items-center justify-between top-0">
     <div class="container px-6 mx-auto flex flex-wrap items-center justify-between">
       <div class="w-full relative flex justify-between lg:w-40  px-4 lg:static lg:block lg:justify-start">
-        <a class="text-sm font-bold leading-relaxed inline-block mr-4 pt-1 whitespace-nowrap uppercase text-white" href="#pablo">
-            <img src="../assets/logo.png" alt="">
+        <a class="imageLogo text-sm font-bold leading-relaxed inline-block mr-4 pt-1 whitespace-nowrap uppercase text-white" href="#pablo">
+            <img  src="../assets/logo.png" alt="">
         </a>
         <button class="text-black cursor-pointer text-xl leading-none px-3 py-1 border border-solid border-transparent rounded bg-transparent block lg:hidden outline-none focus:outline-none" type="button" v-on:click="toggleNavbar()">
           <i class="fas fa-bars"></i>
@@ -93,6 +93,16 @@ export default {
 
 a{
     font-size: 14px;
+}
+
+nav{
+
+  .imageLogo{
+    img{
+      width: 100px;
+    }
+  }
+    
 }
 
 

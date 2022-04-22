@@ -58,6 +58,7 @@
 import axios from 'axios'
 import swal from 'sweetalert';
 
+
 export default {
   inject: ['setLogin'],
     name: "login",
@@ -75,11 +76,11 @@ export default {
       async signin(){
         console.log(this.Log_in);
       let config = {
-                headers: {
-                  'Accept' : 'application/json',
-                  'Content-Type': 'application/json'
-                }
-            };
+        headers: {
+          'Accept' : 'application/json',
+          'Content-Type': 'application/json'
+        }
+      };
       axios.post('http://127.0.0.1:8000/api/login', 
         this.Log_in,config)
       .then(res => {

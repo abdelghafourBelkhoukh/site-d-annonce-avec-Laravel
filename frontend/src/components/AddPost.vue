@@ -1,6 +1,6 @@
 
 <template>
-    <div class="addPost  flex justify-end pr-8 mr-10 " v-if="isLogged">
+    <div class="addPost  flex justify-end pr-8 mr-10" v-if="isLogged">
         <button @click="showing = true;" type="button" class="fixed inline-block px-6 py-2.5 bg-slate-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out" data-bs-toggle="modal" data-bs-target="#exampleModalCenter">
         Add Announcement
         </button>
@@ -27,15 +27,15 @@
             <div class="p-6 space-y-6">
                 <div class="py-2">
             <label for="Title" class="sr-only">Title</label>
-            <input id="Title" name="Title" type="text" autocomplete="" required class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-lg focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm" placeholder="Title" v-model="announcemenet.title">
+            <input id="Title" name="Title" type="text" autocomplete="" required class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-lg focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm" placeholder="Title" v-model="announcement.title">
         </div>
         <div class="py-2">
             <label for="description" class="sr-only">description</label>
-            <input id="description" name="description" type="text" autocomplete="current-password" required class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-lg focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm" placeholder="description" v-model="announcemenet.description">
+            <input id="description" name="description" type="text" autocomplete="current-password" required class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-lg focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm" placeholder="description" v-model="announcement.description">
         </div>
         <div class="py-2">
             <label for="type" class="sr-only">type</label>
-            <select name="type" id="type" class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-lg focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm">
+            <select v-model="announcement.type" name="type" id="type" class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-lg focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm">
                 <option value="" selected>Choose type...</option>
                 <option value="offer">offer</option>
                 <option value="request">request</option>
@@ -43,7 +43,7 @@
         </div>
         <div class="py-2">
             <label for="picture" class="sr-only">picture</label>
-            <input id="picture" name="picture" type="file" autocomplete="current-password" required class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-lg focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm" placeholder="Password Confirmation" @change="announcemenet.picture">
+            <input id="picture" type="file" @change="handleChange" accept=".jpg, .jpeg, .png" required class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-lg focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm" placeholder="Password Confirmation">
         </div>
             </div>
             <!-- Modal footer -->
@@ -61,6 +61,7 @@
 
 <script>
 
+
 import axios from "axios";
 
 export default {
@@ -70,15 +71,17 @@ export default {
     },
 
     data() {
-        return {        
+        return {     
+            props: ['getOfferAnnouncements'],
             showing: false,
-            announcemenet: {
+            announcement: {
                 authorID: localStorage.getItem("id"),
                 title: '',
                 description: '',
-                picture: 'https://i.stack.imgur.com/6Yn3K.png',
-                type: 'offer',
+                picture: '',
+                type: '',
             },
+            file: null,
             isLogged:this.isLogin,
         }
     },
@@ -92,7 +95,7 @@ export default {
                     'Authorization': 'Bearer ' + localStorage.getItem("token")
                 }
             };
-            axios.post('http://localhost:8000/api/announcements', this.announcemenet, config)
+            axios.post('http://localhost:8000/api/announcements', this.announcement, config)
             .then(response => {
                 console.log(response);
                 this.showing = false;
@@ -100,6 +103,10 @@ export default {
             .catch(error => {
                 console.log(error);
             });
+        },
+        handleChange(e) {
+            const files = e.target.files;
+        this.announcement.picture = 'http://localhost:8080/images/'+files[0].name;
         },
     }
 };

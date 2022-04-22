@@ -19,32 +19,36 @@
             <!-- Modal body -->
             <div class="p-6 space-y-6">
                 <div class="py-2">
-          <label for="Title" class="sr-only">Title</label>
-          <input id="Title" name="Title" type="text" autocomplete="" required class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-lg focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm" placeholder="Title">
+            <label for="Title" class="sr-only">Title</label>
+            <input id="Title" name="Title" type="text" autocomplete="" required class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-lg focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm" placeholder="Title" v-model="announcement.title">
         </div>
         <div class="py-2">
-          <label for="description" class="sr-only">description</label>
-          <input id="description" name="description" type="text" autocomplete="current-password" required class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-lg focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm" placeholder="description">
+            <label for="description" class="sr-only">description</label>
+            <input id="description" name="description" type="text" autocomplete="current-password" required class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-lg focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm" placeholder="description" v-model="announcement.description">
         </div>
         <div class="py-2">
-          <label for="Password-Confirmation" class="sr-only">Password Confirmation</label>
-          <input id="Password-Confirmation" name="Password-Confirmation" type="password" autocomplete="current-password" required class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-lg focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm" placeholder="Password Confirmation">
+            <label for="type" class="sr-only">type</label>
+            <select v-model="announcement.type" name="type" id="type" class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-lg focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm">
+                <option value="" disabled selected>Choose type...</option>
+                <option value="offer">offer</option>
+                <option value="request">request</option>
+            </select>
         </div>
         <div class="py-2">
-          <label for="Password-Confirmation" class="sr-only">Password Confirmation</label>
-          <input id="Password-Confirmation" name="Password-Confirmation" type="password" autocomplete="current-password" required class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-lg focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm" placeholder="Password Confirmation">
+            <label for="picture" class="sr-only">picture</label>
+            <input id="picture" @change="handleChange"  name="picture" type="file" autocomplete="current-password" required class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-lg focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm" placeholder="Password Confirmation" >
         </div>
             </div>
             <!-- Modal footer -->
             <div class="flex items-center p-6 space-x-2 rounded-b border-t border-gray-200 dark:border-gray-600">
-                <button data-modal-toggle="large-modal" type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Update</button>
+                <button @click="updateOffer(announcement.id)" data-modal-toggle="large-modal" type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Update</button>
                 <button @click="showingUpdate = false" data-modal-toggle="large-modal" type="button" class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">Close</button>
             </div>
         </div>
 </div>
   </div>
   </div>
-  <div class="posts p-10" >
+  <div class="posts p-10 lg:px-64  md:px-48"  >
     <!-- post -->
     <div
       class="container my-10 mx-auto max-w-3xl bg-slate-200 rounded-xl shadow-lg hover:scale-105 hover:shadow-2xl transform transition-all duration-500"
@@ -61,10 +65,7 @@
               {{offer.name}}
             </h1>
             <p class="text-sm text-gray-800 hover:underline cursor-pointer">
-              Created at {{offer.created_at}} /////
-              {{userID}}
-              {{offer.id}}
-              {{offer.authorID}}
+              Created at {{offer.created_at}}
             </p>
           </div>
         </div>
@@ -96,7 +97,7 @@
                 <a
                   href="#" 
                   class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                  @click="showingUpdate = true"
+                  @click="getOffer(offer.id)"
                   >Edit</a>
               </li>
               <li>
@@ -109,10 +110,10 @@
               
             </ul>
           </div>
-         
+        
         </div>
       </div>
-      <img src="https://i.stack.imgur.com/6Yn3K.png" alt="" />
+      <img :src="offer.picture" alt="image" />
       <div class="p-6">
         <h1 class="text-3xl font-bold text-gray-800 cursor-pointer">{{offer.title}}</h1>
         <h2 class="text-xl text-gray-800 font-semibold">by {{offer.name}}</h2>
@@ -124,7 +125,6 @@
   </div>
 </template>
 <script>
-
 import axios from 'axios'
 
 export default {
@@ -136,24 +136,57 @@ export default {
       showing: false,
       showingUpdate: false,
       offerAnnouncements: [],
+      announcement: '',
       logged : this.isLogin,
       userID: localStorage.getItem('id'),
     }
   },
-  beforeMount(){
+  mounted(){
     this.getOfferAnnouncements()
   },
   methods: {
+    //read all announcements
     getOfferAnnouncements : function(){
       axios.get('http://127.0.0.1:8000/api/announcements/search/offer')
       .then(response => {
         this.offerAnnouncements = response.data
-        console.log(response.data)
       })
       .catch(err => {
         console.log(err)
       })
     },
+    //get announecement by id for update
+    getOffer : function(id){
+      axios.get('http://127.0.0.1:8000/api/announcements/'+id)
+      .then(response => {
+        this.showingUpdate = true;
+        this.announcement = response.data
+        console.log(response)
+      })
+      .catch(err => {
+        console.log(err)
+      })
+    },
+    //update announcement
+    updateOffer : function(id){
+      const config = {
+        headers: {
+          'accept': 'application/json',
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + localStorage.getItem('token')
+        }
+      }
+      axios.put('http://127.0.0.1:8000/api/announcements/'+id, this.announcement, config)
+      .then(response => {
+        this.getOfferAnnouncements()
+        this.showingUpdate = false;
+        console.log(response)
+      })
+      .catch(err => {
+        console.log(err)
+      })
+    },
+    //delete announcement
     deleteOffer: function(id){
       const config = {
                 headers: {
@@ -169,7 +202,12 @@ export default {
       .catch(err => {
         console.log(err)
       })
-    }
+    },
+    handleChange(e) {
+            const files = e.target.files;
+        this.announcement.picture = 'http://localhost:8080/images/'+files[0].name;
+        console.log(this.announcement.picture)
+        },
   }
 }
 </script>

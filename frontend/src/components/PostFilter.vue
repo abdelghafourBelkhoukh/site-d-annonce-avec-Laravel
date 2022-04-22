@@ -28,7 +28,11 @@
 </template>
 <script>
 import PostOffers from './PostOffers.vue';
-import PostRequests from './PostRequests.vue'
+import PostRequests from './PostRequests.vue';
+
+
+
+
 export default {
   name: "PostFilter",
   components: {

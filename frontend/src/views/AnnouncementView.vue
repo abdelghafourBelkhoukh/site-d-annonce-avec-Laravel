@@ -28,7 +28,7 @@ export default {
 
 <style >
   .main-content {
-  background-image: url("https://i.stack.imgur.com/6Yn3K.png");
+  /* background-image: url("https://facingtoday.facinghistory.org/hs-fs/hubfs/Stacey_Blog_Photos/books%20photo%20for%20blog.jpg?width=1873&name=books%20photo%20for%20blog.jpg"); */
   height: auto;
 }
 </style>
